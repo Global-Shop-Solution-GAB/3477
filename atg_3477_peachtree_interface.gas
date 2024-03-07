@@ -1,0 +1,493 @@
+Program.Sub.ScreenSU.Start
+
+Gui.Form1..Create
+Gui.Form1..Caption("Peachtree Interface")
+Gui.Form1..Size(4380,4185)
+Gui.Form1..Position(0,0)
+Gui.Form1..AlwaysOnTop(False)
+Gui.Form1..FontName("Arial")
+Gui.Form1..FontSize(8)
+Gui.Form1..ForeColor(0)
+Gui.Form1..Backcolor(-2147483633)
+Gui.Form1..ControlBox(True)
+Gui.Form1..MaxButton(True)
+Gui.Form1..MinButton(True)
+Gui.Form1..MousePointer(0)
+Gui.Form1..Moveable(True)
+Gui.Form1..Sizeable(True)
+Gui.Form1..ShowInTaskBar(True)
+Gui.Form1..TitleBar(True)
+
+Gui.Form1..Event(unload,PrgramEnd)
+
+Gui.Form1.frame1.Create(frame)
+Gui.Form1.frame1.Caption("Select Date Range")
+Gui.Form1.frame1.Visible(True)
+Gui.Form1.frame1.Size(3570,2490)
+Gui.Form1.frame1.Zorder(0)
+Gui.Form1.frame1.Position(290,290)
+Gui.Form1.frame1.Enabled(True)
+Gui.Form1.frame1.BorderStyle(0)
+Gui.Form1.frame1.FontName("Arial")
+Gui.Form1.frame1.FontSize(8)
+Gui.Form1.frame1.Tooltip("")
+
+
+Gui.Form1.datepickerFrom.Create(datepicker)
+Gui.Form1.datepickerFrom.Visible(True)
+Gui.Form1.datepickerFrom.Size(1935,285)
+Gui.Form1.datepickerFrom.Zorder(0)
+Gui.Form1.datepickerFrom.Position(825,500)
+Gui.Form1.datepickerFrom.Enabled(True)
+Gui.Form1.datepickerFrom.Checkbox(False)
+Gui.Form1.datepickerFrom.Parent("frame1")
+Gui.Form1.datepickerFrom.TabStop(True)
+Gui.Form1.datepickerFrom.TabIndex(1)
+Gui.Form1.datepickerFrom.Tooltip("")
+Gui.Form1.datepickerFrom.ControlGroup(0)
+Gui.Form1.datepickerFrom.DefaultValue("")
+
+
+Gui.Form1.lbl1.Create(label)
+Gui.Form1.lbl1.Caption("Through")
+Gui.Form1.lbl1.Visible(True)
+Gui.Form1.lbl1.Size(1545,285)
+Gui.Form1.lbl1.Zorder(1)
+Gui.Form1.lbl1.Position(825,1155)
+Gui.Form1.lbl1.Enabled(True)
+Gui.Form1.lbl1.Alignment(0)
+Gui.Form1.lbl1.FontName("Arial")
+Gui.Form1.lbl1.FontSize(8)
+Gui.Form1.lbl1.Backcolor(-2147483633)
+Gui.Form1.lbl1.BackStyle(0)
+Gui.Form1.lbl1.Parent("frame1")
+Gui.Form1.lbl1.Tooltip("")
+Gui.Form1.lbl1.ControlGroup(0)
+
+
+Gui.Form1.datepickerThru.Create(datepicker)
+Gui.Form1.datepickerThru.Visible(True)
+Gui.Form1.datepickerThru.Size(1935,285)
+Gui.Form1.datepickerThru.Zorder(0)
+Gui.Form1.datepickerThru.Position(825,1775)
+Gui.Form1.datepickerThru.Enabled(True)
+Gui.Form1.datepickerThru.Checkbox(False)
+Gui.Form1.datepickerThru.Parent("frame1")
+Gui.Form1.datepickerThru.TabStop(True)
+Gui.Form1.datepickerThru.TabIndex(3)
+Gui.Form1.datepickerThru.Tooltip("")
+Gui.Form1.datepickerThru.ControlGroup(0)
+Gui.Form1.datepickerThru.DefaultValue("")
+
+
+Gui.Form1.cmdOk.Create(button)
+Gui.Form1.cmdOk.Caption("OK")
+Gui.Form1.cmdOk.Visible(True)
+Gui.Form1.cmdOk.Size(1005,375)
+Gui.Form1.cmdOk.Zorder(0)
+Gui.Form1.cmdOk.Position(2705,3075)
+Gui.Form1.cmdOk.Enabled(True)
+Gui.Form1.cmdOk.FontName("Arial")
+Gui.Form1.cmdOk.FontSize(8)
+Gui.Form1.cmdOk.TabStop(True)
+Gui.Form1.cmdOk.TabIndex(4)
+Gui.Form1.cmdOk.Tooltip("")
+Gui.Form1.cmdOk.ControlGroup(0)
+Gui.Form1.cmdOk.DefaultValue("")
+
+Gui.Form1.cmdOk.Event(click,cmdok_click)
+
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+'coder:JCT
+'for Pratt Miller
+
+
+F.ODBC.Connection!Con.OpenConnection(V.Ambient.PDSN,V.Ambient.PUser,V.Ambient.PPass,360)
+Gui.Form1..Show
+
+
+
+Program.Sub.Main.End
+
+Program.Sub.PrgramEnd.Start
+
+
+F.ODBC.Connection!Con.Close
+F.Intrinsic.Control.End
+
+Program.Sub.PrgramEnd.End
+
+program.sub.cmdok_click.start
+
+Gui.Form1..Visible(false)
+F.Intrinsic.UI.InvokeWaitDialog("Creating Peachtree Export File","GSS - Peachtree Interface")
+
+V.Local.ssel.Declare(String)
+V.Local.sSelB.Declare(String)
+V.Local.sData.Declare(String)
+V.Local.sLine.Declare(String)
+V.Local.sFile.Declare(String)
+V.Local.sWrite.Declare(String)
+V.Local.sTN.Declare(String)
+V.Local.sMessage.Declare(String)
+V.Local.stext.Declare(String)
+V.Local.sSaveDir.Declare(String)
+V.Local.sFI.Declare(String)
+V.Local.sLstNme.Declare(String)
+V.Local.sName.Declare(String)
+
+V.Local.sDateFrom.Declare(String)
+V.Local.sDateThru.Declare(String)
+V.Local.sJob.Declare(String)
+V.Local.sSuffix.Declare(String)
+V.Local.sTicketNo.Declare(String)
+V.Local.sEmployee.Declare(String)
+V.Local.sDuration.Declare(String)
+V.Local.sBillType.Declare(String)
+V.Local.sManTime.Declare(String)
+V.Local.sUsePay.Declare(String)
+V.Local.sPaylevel.Declare(String)
+V.Local.sCustJob.Declare(String)
+V.Local.sCust.Declare(String)
+V.Local.sActivity.Declare(String)
+V.Local.sInv.Declare(String)
+V.Local.sBillStat.Declare(String)
+V.Local.sRate.Declare(String)
+V.Local.sEmpID.Declare(String)
+V.Local.sEmpName.Declare(String)
+V.Local.sTicketDte.Declare(String)
+V.Local.sDate.Declare(String)
+V.Local.stime.Declare(String)
+V.Local.fDuration.Declare(Float)
+
+V.Local.lCount.Declare(Long)
+V.Local.lwait.Declare(Long)
+
+V.Local.bHere.Declare(Boolean)
+
+
+V.Local.sEmployee.Set("0")
+V.Local.sBillType.Set("1")
+V.Local.sManTime.Set("1")
+V.Local.sUsePay.Set("FALSE")
+V.Local.sPaylevel.set("1")
+V.Local.sCustJob.Set("2")
+V.Local.sCust.Set("TIME")
+V.Local.sInv.Set("FALSE")
+V.Local.sBillStat.Set("1")
+V.Local.sRate.Set("")
+
+
+V.Local.sData.Set("Ticket No,Employee(0)/Vendor(1),Hours Worked,Blling Type=Employee Rate(1),Manual(0)/Timed(1) Option,Used in Payroll,Pay Level,Customer(1)/Job(2)/Adm(3),Completed For ID,Job-Suffix,Used in Sales/Invoicing,Billing Status=Billable,Billing Rate,Employee ID,Charge Date")
+
+F.Intrinsic.String.StripCharacters(V.Ambient.Time,V.Local.stime)
+F.Intrinsic.String.StripCharacters(V.Ambient.Date,V.Local.sDate)
+
+F.Intrinsic.String.Concat(V.System.Temp,"\overage.txt",V.Local.sMessage)
+F.Intrinsic.String.Concat(V.System.Temp,"\TIME",V.Local.sDate,V.Local.stime,".csv",V.Local.sFile)
+F.Intrinsic.String.Format(V.Screen.Form1!datepickerFrom.Value,"yyyy-mm-dd",V.Local.sDateFrom)
+F.Intrinsic.String.Format(V.Screen.Form1!datepickerThru.Value,"yyyy-mm-dd",V.Local.sDateThru)
+
+F.Intrinsic.String.Concat("select count (SUFFIX) as C from v_JOB_DETAIL where LMO='L' and CHARGE_DATE >='",V.Local.sDateFrom,"'and CHARGE_DATE <='",V.Local.sDateThru,"'",V.Local.ssel)
+F.ODBC.Connection!Con.OpenRecordsetRO("rstX",V.Local.ssel)
+	V.Local.lCount.Set(V.ODBC.Con!rstX.FieldVal!C)
+F.ODBC.Con!rstX.Close
+
+F.Intrinsic.String.Concat("select distinct JOB,SUFFIX,SEQ,EMPL,CHARGE_DATE from v_JOB_DETAIL where LMO='L' and EDITED_WO_DTL <>'R' and CHARGE_DATE >='",V.Local.sDateFrom,"'and CHARGE_DATE <='",V.Local.sDateThru,"'order by CHARGE_DATE,JOB,SUFFIX,SEQ,EMPL",V.Local.ssel)
+F.ODBC.Connection!Con.OpenRecordsetRO("rstSel",V.Local.ssel)
+	F.Intrinsic.Control.DoUntil(V.ODBC.Con!rstSel.EOF,=,True)
+
+V.Local.fDuration.Set(0)
+F.Intrinsic.Math.Add(V.Local.lwait,1,V.Local.lwait)
+F.Intrinsic.UI.ChangeWaitStatus("Creating Peachtree Export File",V.Local.lwait,1,V.Local.lCount)
+		V.Local.sJob.Set(V.ODBC.Con!rstSel.FieldValTrim!JOB)
+		V.Local.sSuffix.Set(V.ODBC.Con!rstSel.FieldValTrim!SUFFIX)
+		V.Local.sEmpID.Set(V.ODBC.Con!rstSel.FieldValTrim!EMPL)
+		V.Local.sTicketDte.Set(V.ODBC.Con!rstSel.FieldValTrim!CHARGE_DATE)
+
+			F.Intrinsic.String.Format(V.Local.sTicketDte,"yyyy-mm-dd",V.Local.sTicketDte)
+				F.Intrinsic.String.Left(V.Local.sEmpName,20,V.Local.sEmpName)
+				F.Intrinsic.String.Left(V.Local.sActivity,20,V.Local.sActivity)
+
+
+'	F.Intrinsic.String.Concat("select distinct NAME from V_EMPLOYEE_MSTR where EMPLOYEE='",V.Local.sEmpID,"'",V.Local.sSelB)
+	F.Intrinsic.String.Concat("select distinct employee as NAME from v_JOB_DETAIL where EMPL='",V.Local.sEmpID,"'",V.Local.sSelB)
+	F.ODBC.Connection!Con.OpenRecordsetRO("rstSelB",V.Local.sSelB)
+
+'George Thuo added a check when EOF=True to clost rstSelB.Close	
+		F.Intrinsic.Control.If(V.ODBC.Con!rstSelB.EOF,=,False)
+			V.Local.sEmpName.Set(V.ODBC.Con!rstSelB.FieldValTrim!NAME)
+			F.Intrinsic.String.Replace(V.Local.sEmpName,"*","",V.Local.sEmpName)
+			F.Intrinsic.String.Trim(V.Local.sEmpName,V.Local.sEmpName)
+			F.ODBC.Con!rstSelB.Close
+		F.Intrinsic.Control.Else
+			F.ODBC.Con!rstSelB.Close
+		F.Intrinsic.Control.EndIf
+
+'George Thuo added a check when EOF=True to clost rstSelB.Close	
+	F.Intrinsic.String.Concat("select PROJECT,PHASE from V_JOB_HEADER where JOB='",V.Local.sJob,"'and SUFFIX='",V.Local.sSuffix,"'",V.Local.sSelB)
+	F.ODBC.Connection!Con.OpenRecordsetRO("rstSelB",V.Local.sSelB)
+	F.Intrinsic.Control.If(V.ODBC.Con!rstSelB.EOF,"=",False)
+		F.Intrinsic.String.Concat(V.ODBC.Con!rstSelB.FieldValTrim!PROJECT,V.ODBC.Con!rstSelB.FieldValTrim!PHASE,V.Local.sActivity)
+		F.Intrinsic.String.StripCharacters(V.Local.sActivity,V.Local.sActivity)
+		F.ODBC.Con!rstSelB.Close
+	F.Intrinsic.Control.Else
+		F.ODBC.Con!rstSelB.Close
+	F.Intrinsic.Control.EndIf
+
+
+	F.Intrinsic.String.Split(V.Local.sEmpName,",",V.Local.sName)
+	V.Local.sName.RedimPreserve(0,1)
+		F.Intrinsic.Control.If(V.Local.sName(1),<>,"")
+			F.Intrinsic.String.Trim(V.Local.sName(1),V.Local.sName(1))
+			F.Intrinsic.String.Left(V.Local.sName(1),1,V.Local.sFI)
+			F.Intrinsic.String.Concat(V.Local.sFI,V.Local.sName(0),V.Local.sEmpName)
+		F.Intrinsic.Control.Else
+	F.Intrinsic.String.Split(V.Local.sEmpName," ",V.Local.sName)
+			F.Intrinsic.String.Trim(V.Local.sName(0),V.Local.sName(0))
+		F.Intrinsic.String.Left(V.Local.sName(0),1,V.Local.sFI)
+		V.Local.sLstNme.Set(V.Local.sName(V.Local.sName.UBound))
+			F.Intrinsic.String.Concat(V.Local.sFI,V.Local.sLstNme,V.Local.sEmpName)
+		F.Intrinsic.Control.EndIf
+
+	F.Intrinsic.String.Left(V.Local.sEmpName,20,V.Local.sEmpName)
+
+	F.Intrinsic.String.Concat("select HOURS_WORKED as H from v_JOB_DETAIL where JOB='",V.Local.sJob,"'and SUFFIX='",V.Local.sSuffix,"'and SEQ='",V.ODBC.Con!rstSel.FieldValTrim!SEQ,"'and EDITED_WO_DTL <>'R'  and EMPL='",V.Local.sEmpID,"'and CHARGE_DATE='",V.Local.sTicketDte,"'",V.Local.sSelB)
+	F.ODBC.Connection!Con.OpenRecordsetRO("rstSelB",V.Local.sSelB)
+		F.Intrinsic.Control.DoUntil(V.ODBC.Con!rstSelB.EOF,=,True)
+			V.Local.fDuration.Set(V.ODBC.Con!rstSelB.FieldVal!H)
+
+F.Intrinsic.Control.CallSub(Duration,"Duration",V.Local.fDuration,"Empl",V.Local.sEmpID,"Job",V.Local.sJob,"Suffix",V.Local.sSuffix)
+	V.Local.sDuration.Set(V.Args.Duration)
+
+F.Intrinsic.Control.CallSub(Identity)
+	V.Local.sTN.Set(V.Args.TN)
+
+'	F.Intrinsic.String.Concat("select * from ATG_3477_PACHTRE_PRL where ACTIVITY_ID='",V.Local.sActivity,"'and EMPL_ID='",V.Local.sEmpName,"'and TICKET_DATE='",V.Local.sTicketDte,"'",V.Local.sWrite)
+	F.Intrinsic.String.Concat("select * from ATG_3477_PACHTRE_PRL","",V.Local.sWrite)
+	F.ODBC.Connection!Con.OpenRecordsetRW("rstWrite",V.Local.sWrite)
+			F.ODBC.Con!rstWrite.AddNew
+				F.ODBC.Con!rstWrite.set!TICKET_NO(V.Local.sTN)
+				F.ODBC.Con!rstWrite.set!EMPLOYEE(V.Local.sEmployee)
+				F.ODBC.Con!rstWrite.set!TICKET_DATE(V.Local.sTicketDte)
+				F.ODBC.Con!rstWrite.set!BILLING_TYPE(V.Local.sBillType)
+				F.ODBC.Con!rstWrite.set!DURATION(V.Local.sDuration)
+				F.ODBC.Con!rstWrite.set!MANUAL_TIMED(V.Local.sManTime)
+				F.ODBC.Con!rstWrite.set!USED_IN_PAYROLL(V.Local.sUsePay)
+				F.ODBC.Con!rstWrite.set!PAYLEVEL(V.Local.sPaylevel)
+				F.ODBC.Con!rstWrite.set!CUST_JOB(V.Local.sCustJob)
+				F.ODBC.Con!rstWrite.set!ACTIVITY_ID(V.Local.sActivity)
+				F.ODBC.Con!rstWrite.set!USED_FOR_INVOICING(V.Local.sInv)
+				F.ODBC.Con!rstWrite.set!BILLING_STATUS(V.Local.sBillStat)
+				F.ODBC.Con!rstWrite.set!EMPL_ID(V.Local.sEmpName)
+			F.ODBC.Con!rstWrite.Update
+
+		F.Intrinsic.String.Concat(V.Local.sTN,",",V.Local.sEmployee,",",V.Local.sDuration,",",V.Local.sBillType,",",V.Local.sManTime,",",V.Local.sUsePay,",",V.Local.sPaylevel,",",V.Local.sCustJob,",",V.Local.sCust,",",V.Local.sActivity,",",V.Local.sInv,",",V.Local.sBillStat,",",V.Local.sRate,",",V.Local.sEmpName,",",V.Local.sTicketDte,V.Local.sLine)
+
+		F.Intrinsic.String.Concat(V.Local.sData,V.Ambient.NewLine,V.Local.sLine,V.Local.sData)
+	F.ODBC.Con!rstWrite.Close
+
+
+		F.ODBC.Con!rstSelB.MoveNext
+		F.Intrinsic.Control.Loop
+	F.ODBC.Con!rstSelB.Close
+
+
+	F.ODBC.Con!rstSel.MoveNext
+	F.Intrinsic.Control.Loop
+F.ODBC.Con!rstSel.Close
+
+
+F.Intrinsic.File.String2File(V.Local.sFile,V.Local.sData)
+F.Intrinsic.File.Exists(V.Local.sMessage,V.Local.bHere)
+	F.Intrinsic.Control.If(V.Local.bHere,=,True)
+		F.Intrinsic.File.File2String(V.Local.sMessage,V.Local.stext)
+		F.Intrinsic.UI.Msgbox(V.Local.stext,"Hour Overages")
+		F.Intrinsic.File.DeleteFile(V.Local.sMessage)
+	F.Intrinsic.Control.EndIf
+
+
+F.Intrinsic.UI.CloseWaitDialog
+
+
+F.Intrinsic.UI.ShowSaveFileDialog(V.Local.sSaveDir,".csv",V.Local.sSaveDir)
+'	F.Intrinsic.File.MoveFile(V.Local.sFile,V.Local.sSaveDir,V.Local.lCount)
+	F.Intrinsic.File.CopyFile(V.Local.sFile,V.Local.sSaveDir)
+	F.Intrinsic.File.DeleteFile(V.Local.sFile)
+
+F.Intrinsic.Control.CallSub(Prgramend)
+
+program.sub.cmdok_click.end
+
+Program.Sub.Identity.Start
+
+V.Local.sATN.Declare(String)
+V.Local.sAlpha.Declare(String)
+V.Local.sTN.Declare(String)
+
+V.Local.lLen.Declare(Long)
+V.Local.lTN.Declare(Long)
+
+F.ODBC.Connection!Con.OpenRecordsetRO("rstTN","select max(TICKET_NO) as TN from ATG_3477_PACHTRE_PRL")
+	V.Local.sTN.Set(V.ODBC.Con!rstTN.FieldVal!TN)
+F.ODBC.Con!rstTN.Close
+
+
+F.Intrinsic.Control.If(V.Local.sTN,=,"")
+	V.Local.lTN.Set(1)
+	F.Intrinsic.Control.CallSub(Alpha,"Alpha",V.Local.sAlpha)
+		V.Local.sAlpha.Set(V.Args.Alpha)
+
+F.Intrinsic.Control.Else
+		F.Intrinsic.String.Left(V.Local.sTN,8,V.Local.lTN)
+			F.Intrinsic.Control.If(V.Local.lTN,=,99999999)
+				F.Intrinsic.String.Right(V.Local.sTN,1,V.Local.sAlpha)
+				V.Local.lTN.Set(1)
+				F.Intrinsic.Control.CallSub(Alpha,"Alpha",V.Local.sAlpha)
+					V.Local.sAlpha.Set(V.Args.ALPHA)
+			F.Intrinsic.Control.else
+					F.Intrinsic.String.Left(V.Local.sTN,8,V.Local.lTN)
+					F.Intrinsic.String.Right(V.Local.sTN,1,V.Local.sAlpha)
+				F.Intrinsic.Math.Add(V.Local.lTN,1,V.Local.lTN)
+		F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.EndIf
+
+
+	F.Intrinsic.String.Format(V.Local.lTN,"00000000",V.Local.sTN)
+
+F.Intrinsic.String.Concat(V.Local.sTN,V.Local.sAlpha,V.Local.sATN)
+F.Intrinsic.Variable.AddRV("TN",V.Local.sATN)
+
+Program.Sub.Identity.End
+
+Program.Sub.Alpha.Start
+
+V.Local.sAlpha.Declare(String)
+
+F.Intrinsic.Control.If(V.Args.Alpha,=,"")
+	V.Local.sAlpha.Set("A")
+F.Intrinsic.Control.elseIf(V.Args.Alpha,=,"A")
+	V.Local.sAlpha.Set("B")
+F.Intrinsic.Control.elseIf(V.Args.Alpha,=,"B")
+	V.Local.sAlpha.Set("C")
+F.Intrinsic.Control.elseIf(V.Args.Alpha,=,"C")
+	V.Local.sAlpha.Set("D")
+F.Intrinsic.Control.elseIf(V.Args.Alpha,=,"D")
+	V.Local.sAlpha.Set("E")
+F.Intrinsic.Control.elseIf(V.Args.Alpha,=,"E")
+	V.Local.sAlpha.Set("F")
+F.Intrinsic.Control.elseIf(V.Args.Alpha,=,"F")
+	V.Local.sAlpha.Set("G")
+F.Intrinsic.Control.elseIf(V.Args.Alpha,=,"G")
+	V.Local.sAlpha.Set("H")
+F.Intrinsic.Control.elseIf(V.Args.Alpha,=,"H")
+	V.Local.sAlpha.Set("I")
+F.Intrinsic.Control.elseIf(V.Args.Alpha,=,"I")
+	V.Local.sAlpha.Set("J")
+F.Intrinsic.Control.elseIf(V.Args.Alpha,=,"J")
+	V.Local.sAlpha.Set("K")
+F.Intrinsic.Control.elseIf(V.Args.Alpha,=,"K")
+	V.Local.sAlpha.Set("L")
+F.Intrinsic.Control.elseIf(V.Args.Alpha,=,"L")
+	V.Local.sAlpha.Set("M")
+F.Intrinsic.Control.elseIf(V.Args.Alpha,=,"M")
+	V.Local.sAlpha.Set("N")
+F.Intrinsic.Control.elseIf(V.Args.Alpha,=,"N")
+	V.Local.sAlpha.Set("O")
+F.Intrinsic.Control.elseIf(V.Args.Alpha,=,"O")
+	V.Local.sAlpha.Set("P")
+F.Intrinsic.Control.elseIf(V.Args.Alpha,=,"P")
+	V.Local.sAlpha.Set("Q")
+F.Intrinsic.Control.elseIf(V.Args.Alpha,=,"Q")
+	V.Local.sAlpha.Set("R")
+F.Intrinsic.Control.elseIf(V.Args.Alpha,=,"R")
+	V.Local.sAlpha.Set("S")
+F.Intrinsic.Control.elseIf(V.Args.Alpha,=,"S")
+	V.Local.sAlpha.Set("T")
+F.Intrinsic.Control.elseIf(V.Args.Alpha,=,"T")
+	V.Local.sAlpha.Set("U")
+F.Intrinsic.Control.elseIf(V.Args.Alpha,=,"U")
+	V.Local.sAlpha.Set("V")
+F.Intrinsic.Control.elseIf(V.Args.Alpha,=,"V")
+	V.Local.sAlpha.Set("W")
+F.Intrinsic.Control.elseIf(V.Args.Alpha,=,"W")
+	V.Local.sAlpha.Set("X")
+F.Intrinsic.Control.elseIf(V.Args.Alpha,=,"X")
+	V.Local.sAlpha.Set("Y")
+F.Intrinsic.Control.elseIf(V.Args.Alpha,=,"Y")
+	V.Local.sAlpha.Set("Z")
+F.Intrinsic.Control.EndIF
+
+F.Intrinsic.Variable.AddRV("Alpha",V.Local.sAlpha)
+
+Program.Sub.Alpha.End
+
+Program.Sub.Duration.Start
+
+V.Local.sHours.Declare(String)
+V.Local.sMinutes.Declare(String)
+V.Local.sDuration.Declare(String)
+V.Local.sMessage.Declare(String)
+V.Local.sfile.Declare(String)
+V.Local.sNeg.Declare(String)
+
+V.Local.fHours.Declare(Float)
+V.Local.fMinutes.Declare(Float)
+V.Local.fDecimal.Declare(Float)
+V.Local.fSplit.Declare(Float)
+
+V.Local.iHndle.Declare(Long)
+V.Local.lMinutes.Declare(Long)
+
+'F.Intrinsic.String.Concat(V.System.Temp,"\overage.txt",V.Local.sfile)
+'F.Intrinsic.File.GetHandle(V.Local.iHndle)
+
+V.Local.fDecimal.Set(V.Args.Duration)
+F.Intrinsic.Math.Round(V.Local.fDecimal,2,V.Local.fDecimal)
+F.Intrinsic.String.Split(V.Local.fDecimal,".",V.Local.fSplit)
+	V.Local.fSplit.RedimPreserve(0,1)
+
+	V.Local.fHours.Set(V.Local.fSplit(0))
+		F.Intrinsic.String.LPad(V.Local.fHours,"0",2,V.Local.sHours)
+
+	F.Intrinsic.Math.Sub(V.Local.fDecimal,V.Local.fHours,V.Local.fMinutes)
+
+	F.Intrinsic.Control.If(V.Local.fMinutes,<>,0)
+		F.Intrinsic.Math.Mult(V.Local.fMinutes,60,V.Local.lMinutes)
+			F.Intrinsic.Control.If(V.Local.lMinutes,<,0)
+
+				F.Intrinsic.String.StripCharacters(V.Local.lMinutes,V.Local.lMinutes)
+				V.Local.sNeg.Set("-")
+			F.Intrinsic.Control.Else
+				V.Local.sNeg.Set("")
+			F.Intrinsic.Control.EndIf
+		F.Intrinsic.String.Right(V.Local.sHours,1,V.Local.sHours)
+	F.Intrinsic.Control.EndIf
+		F.Intrinsic.String.LPad(V.Local.lMinutes,"0",2,V.Local.sMinutes)
+
+
+'F.Intrinsic.Control.If(V.Local.fHours,>,23)
+'		F.Intrinsic.String.Concat("Job: ",V.Args.Job,"-",V.Args.Suffix,"  ","Employee:",V.Args.Empl,"  Hours: ",V.Local.fHours,":",V.Local.fMinutes,V.Local.sMessage)
+'		F.Intrinsic.File.OpenForAppend(V.Local.sfile,V.Local.iHndle)
+'			F.Intrinsic.File.WriteLine(V.Local.iHndle,V.Local.sMessage)
+'		F.Intrinsic.File.CloseFile(V.Local.iHndle)
+'F.Intrinsic.Control.EndIf
+
+F.Intrinsic.String.Concat(V.Local.sNeg,V.Local.sHours,":",V.Local.sMinutes,V.Local.sDuration)
+
+F.Intrinsic.Variable.AddRV("Duration",V.Local.sDuration)
+
+Program.Sub.Duration.End
+
+
+
+Program.Sub.Comments.Start
+${$0$}$$}$$}$12:00:00 AM$}$False
+Program.Sub.Comments.End
